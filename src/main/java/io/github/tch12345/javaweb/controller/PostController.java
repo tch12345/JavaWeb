@@ -51,7 +51,7 @@ public class PostController {
         }
 
         List<String> savedImagePaths = new ArrayList<>();
-        if (files != null && files.length > 0) {
+        if (files != null) {
             for (MultipartFile file : files) {
                 if (!file.isEmpty()) {
                     String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
