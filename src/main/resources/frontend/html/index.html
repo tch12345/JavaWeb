@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mini Blog · Modern</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <div class="brand">Mini<b>Blog</b></div>
+      <nav class="nav-center">
+      <a href="#">Home</a>
+      <a href="#">Archive</a>
+      <a href="#">About</a>
+    </nav>
+    <div class="nav-right">
+      <button class="btn login-btn">Login</button>
+       <button id="sidebarToggle" class="btn secondary mobile-toggle">☰</button>
+    </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section>
+      <article class="post glass">
+        <div class="post-image">
+         <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97">
+        </div>
+        <h2>现代化 Mini Blog 设计</h2>
+        <div class="meta">
+          <span class="pill">NEW</span>
+          <span>2026-01-09</span>
+          <span>· 爹</span>
+        </div>
+        <p>采用 Glassmorphism、自动深浅色、柔和动画和现代排版，让纯 HTML + CSS 也能很有质感。</p>
+        <div class="actions">
+     <a href="post.html" class="btn">阅读全文</a>
+          <button class="btn secondary">分享</button>
+        </div>
+      </article>
+
+      <article class="post glass">
+        <h2>为什么要做现代化 UI</h2>
+        <div class="meta">
+          <span>2026-01-08</span>
+          <span>· Design</span>
+        </div>
+        <p>现代 UI 强调留白、层次、动画与可读性，即使是小项目也能显得专业。</p>
+        <div class="actions">
+          <button class="btn">阅读全文</button>
+        </div>
+      </article>
+    </section>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="card glass">
+        <h3>About</h3>
+        <p>一个偏爱现代 Web 设计的小型博客示例，可直接扩展成作品集。</p>
+      </div>
+
+      <div class="card glass">
+        <h3>Tags</h3>
+        <div class="tags">
+          <span class="tag">HTML</span>
+          <span class="tag">CSS</span>
+          <span class="tag">Modern UI</span>
+          <span class="tag">Glass</span>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    © 2026 MiniBlog · Modern HTML & CSS
+  </footer>
+<!-- Login Modal -->
+<div id="loginModal" class="modal">
+  <div class="modal-content glass">
+    <span class="close-btn">&times;</span>
+    <h2>Login</h2>
+    <form>
+      <input type="email" placeholder="Email" required>
+      <input type="password" placeholder="Password" required>
+      <button class="btn" type="submit">Login</button>
+    </form>
+     <!-- Login with Google -->
+    <button class="btn google-login" type="button">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="G" style="width:18px; vertical-align:middle; margin-right:8px;">
+    </button>
+    <p style="margin-top:12px; font-size:0.9rem; color:var(--muted);">
+      还没有账号？ 
+      <a href="register.html" style="color:var(--accent); font-weight:600;">注册</a>
+    </p>
+  </div>
+</div>
+
+</body>
+</html>
+<script src="../js/all.js"></script>
