@@ -39,27 +39,10 @@ public class AuthService {
                 .compact();
     }
 
-    public boolean isLoggedIn(String token) {
-        if (token == null || token.isEmpty()) {
-            return false;
-        }
-        try {
-            Jwts.parser()
-                    .verifyWith(key)
-                    .build()
-                    .parseSignedClaims(token)
-                    .getPayload();
-            return true;
-        } catch (ExpiredJwtException e) {
-            System.out.println("Token Expired");
-        } catch (JwtException e) {
-            System.out.println("Token Invalid");
-        }
-        return false;
-    }
 
     public User getUserFromToken(String token) {
         if (token == null || token.isEmpty()) return null;
+        if (!validateToken(token)) return null;
         try {
             Claims claims = Jwts.parser()
                     .verifyWith(key)
@@ -67,11 +50,43 @@ public class AuthService {
                     .parseSignedClaims(token)
                     .getPayload();
 
+            Date issuedAt = claims.getIssuedAt();
+            Date expiration = claims.getExpiration();
+            if (issuedAt != null && expiration != null) {
+                long durationMillis = expiration.getTime() - issuedAt.getTime();
+                if (durationMillis > EXPIRATION_MS) {
+                    System.out.println("old Token expired");
+                    return null;
+                }
+            }
             String email = claims.getSubject();
             return userRepository.findByEmail(email).orElse(null);
-        } catch (JwtException e) {
-            System.out.println("无效 token");
+        }
+        catch (JwtException e) {
+            System.out.println("invalid token");
             return null;
+        }
+    }
+    public boolean validateToken(String token) {
+        if (token == null || token.isEmpty()) return false;
+        try {
+            Claims claims = Jwts.parser()
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+            Date issuedAt = claims.getIssuedAt();
+            if (issuedAt == null) return false;
+
+            long now = System.currentTimeMillis();
+            if (now - issuedAt.getTime() > EXPIRATION_MS) {
+                System.out.println("Token expired by new EXPIRATION_MS");
+                return false;
+            }
+            return true;
+        } catch (JwtException e) {
+            System.out.println("Token invalid");
+            return false;
         }
     }
 }

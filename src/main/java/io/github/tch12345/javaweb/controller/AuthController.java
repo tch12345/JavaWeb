@@ -57,5 +57,22 @@ public class AuthController {
 
         return ResponseEntity.ok(ApiResponse.success("Login successful", token));
     }
+    @PostMapping("/verify-token")
+    public ResponseEntity<Boolean> verifyToken(
+            @RequestHeader(value = "Authorization", required = false) String authHeader,
+            @RequestParam(value = "Authorization", required = false) String bodyToken
+    ){
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.ok(false);
+        }
+
+        String token = authHeader.substring(7);
+        if (bodyToken != null && bodyToken.equals(token)) {
+            return ResponseEntity.ok(false);
+        }
+        boolean valid = authService.validateToken(token);
+        return ResponseEntity.ok(valid);
+    }
+
 
 }

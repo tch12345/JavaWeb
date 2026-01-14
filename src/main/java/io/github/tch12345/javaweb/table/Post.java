@@ -29,4 +29,5 @@ public class Post {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
+
 }
