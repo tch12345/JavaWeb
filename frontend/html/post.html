@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>现代化 Mini Blog 设计</title>
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<header>
+  <div class="nav">
+    <div class="brand">Mini<b>Blog</b></div>
+    <div class="nav-right">
+      <a href="index.html" class="btn">返回列表</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="post-detail">
+    <h1 id="title">现代化 Mini Blog 设计</h1>
+    <div id="image"><img  src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97" alt=""></div>
+    
+    <p id="content">这里是完整文章内容，可以包含多段文字、图片、列表等。</p>
+    <a href="index.html" class="btn back-btn">返回列表</a>
+
+  </div>
+  
+</main>
+
+<footer>© 2026 MiniBlog</footer>
+</body>
+</html>
+<script src="../js/jquery-3.7.1.min.js"></script>
+<script>
+$(document).ready(function(){
+const urlParams = new URLSearchParams(window.location.search);
+const postId = urlParams.get('id');
+if (!postId) {
+        console.error("No post ID found");
+        return;
+}
+$.ajax({
+  url: `http://localhost:8080/api/posts/${postId}`,
+  type: 'GET',
+  headers: {
+    "Authorization": "Bearer " + localStorage.getItem("token")
+  },
+  success: function(post) {
+    $('#title').text(post.title);
+    $('#content').text(post.content);
+    if (post.images) {
+        try {
+            const imgArray = JSON.parse(post.images);
+            const $imageContainer = $('#image'); // 或者是存放图片的 div
+
+            if (imgArray.length > 0) {
+                // 先清空占位图或默认图
+                $imageContainer.empty(); 
+                
+                // 循环添加所有图片
+                imgArray.forEach(imgUrl => {
+                    $imageContainer.append(`
+                        <img src="${imgUrl}" alt="Post Image" 
+                            style="width: 100%; border-radius: 15px; margin-bottom: 15px; display: block;">
+                    `);
+                });
+            } else {
+                $imageContainer.hide();
+            }
+        } catch (e) {
+            console.error("解析图片列表失败", e);
+            $('#image').hide();
+        }
+    }
+  },
+});
+});
+
+
+</script>

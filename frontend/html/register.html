@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>现代化 Mini Blog 设计</title>
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<header>
+  <div class="nav">
+    <div class="brand">Mini<b>Blog</b></div>
+    <div class="nav-right">
+      <a href="index.html" class="btn">返回列表</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="post-detail glass" style="max-width:400px; margin:50px auto; padding:30px;">
+    <h2>注册账户</h2>
+    <form id="registerForm">
+     <input type="text" name="name" placeholder="用户名" required>
+<input type="email" name="email" placeholder="邮箱" required>
+<input type="password" name="password" placeholder="密码" required>
+      <button class="btn" type="submit">注册</button>
+    </form>
+
+
+
+    <!-- Login redirect -->
+    <p style="margin-top:12px; font-size:0.9rem; color:var(--muted);">
+      已有账号？ 
+      <a href="index.html" style="color:var(--accent); font-weight:600;">登录</a>
+    </p>
+  </div>
+</main>
+
+<footer>© 2026 MiniBlog</footer>
+</body>
+</html>
+
+<script src="../js/jquery-3.7.1.min.js"></script>
+<script>
+$(document).ready(function() {
+  $("#registerForm").submit(function(e) {
+    e.preventDefault(); // 阻止默认刷新
+
+    const formData = new FormData(this); // 直接获取表单数据
+    console.log()
+    $.ajax({
+      url: "http://localhost:8080/api/auth/register",
+      type: "POST",
+      data: formData,
+      processData: false, 
+      contentType: false, 
+      success: function(res) {
+        alert(res.message);
+        window.location.href = "index.html"; // 成功跳转
+      },
+      error: function(xhr) {
+        let errMsg = "注册失败";
+        try {
+          const err = JSON.parse(xhr.responseText);
+          errMsg = err.message || errMsg;
+        } catch(e) {}
+        alert(errMsg);
+      }
+    });
+  });
+});
+</script>
+

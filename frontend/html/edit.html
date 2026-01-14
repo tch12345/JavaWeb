@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>编辑文章 - MiniBlog</title>
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body>
+<header>
+  <div class="nav">
+    <div class="brand">Mini<b>Blog</b></div>
+    <div class="nav-right">
+      <a href="index.html" class="btn">返回列表</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="post-detail">
+
+    <input id="title" type="text">
+
+    <input type="file" id="imageInput" multiple accept="image/*">
+
+    <div id="imagePreview"></div>
+
+    <textarea id="content" style="width:100%; min-height:200px; border:none; outline:none; font-size:16px;"></textarea>
+
+    <button id="saveBtn" class="btn">Save</button>
+    <button type="button" onclick="window.location.href='index.html'" class="btn">Cancel</button>
+  </div>
+</main>
+
+<footer>© 2026 MiniBlog</footer>
+
+<script src="../js/jquery-3.7.1.min.js"></script>
+<script>
+$(function () {
+
+  const postId = new URLSearchParams(location.search).get("id");
+  if (!postId) return alert("缺少文章 ID");
+
+  const token = localStorage.getItem("token");
+  let oldImages = [];
+  let newFiles = [];
+
+  /* ===== 加载旧文章 ===== */
+  $.ajax({
+    url: `http://localhost:8080/api/posts/${postId}`,
+    headers: { Authorization: "Bearer " + token },
+    success(post) {
+      $("#title").val(post.title);
+      $("#content").val(post.content);
+
+      if (post.images) {
+        try {
+          oldImages = JSON.parse(post.images);
+          renderImages(oldImages);
+        } catch (e) {
+          console.error("解析图片列表失败", e);
+        }
+      }
+    }
+  });
+
+  function renderImages(list) {
+    const box = $("#imagePreview");
+    box.empty();
+    list.forEach(url => {
+      box.append(`<img src="${url}">`);
+    });
+  }
+
+
+    $("#saveBtn").click(async function () {
+
+        const fd = new FormData();
+        fd.append("title", $("#title").val());
+        fd.append("content", $("#content").val());
+       const newFiles = $("#imageInput")[0].files;
+
+        if (newFiles && newFiles.length > 0) {
+            for (let i = 0; i < newFiles.length; i++) {
+                fd.append("images", newFiles[i]);
+            }
+        }
+
+    
+        $.ajax({
+            url: `http://localhost:8080/api/posts/update/${postId}`, 
+            type: "PUT",
+            data: fd,
+            processData: false,     
+            contentType: false,     
+            headers: {
+            Authorization: "Bearer " + token
+            },
+            success() {
+            alert("更新成功");
+           // window.location.href = `index.html?id=${postId}`;
+            },
+            error(xhr) {
+            alert("保存失败: " + xhr.responseText);
+            }
+    });
+
+    });
+
+
+    const imageInput = $('#imageInput');
+    const previewDiv = $('#imagePreview');
+    const MAX_IMAGES = 5;
+    imageInput.on('change', function () {
+        previewDiv.empty(); 
+        let files = Array.from(this.files);
+        if (files.length > MAX_IMAGES) {
+            alert(`You can upload maximum ${MAX_IMAGES} images`);
+            files = files.slice(0, MAX_IMAGES);
+            const dataTransfer = new DataTransfer();
+            files.forEach(file => dataTransfer.items.add(file));
+            this.files = dataTransfer.files;
+        }
+        files.forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const img = $('<img>').attr('src', e.target.result);
+                previewDiv.append(img);
+            };
+            reader.readAsDataURL(file);
+        });
+    });
+
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mini Blog · Modern</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <div class="brand">Mini<b>Blog</b></div>
+      <nav class="nav-center">
+      <a href="#">Home</a>
+      <a href="#">Archive</a>
+      <a href="#">About</a>
+    </nav>
+    <div class="nav-right">
+        <button class="btn login-btn">Login</button>
+        <button class="btn primary logined" id="addPostBtn">Add Post</button>
+        <button class="btn secondary logined" id="logout">Logout</button>
+        <button id="sidebarToggle" class="btn secondary mobile-toggle">☰</button>
+    </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="postContainer">
+      <!-- <article class="post glass">
+        <div class="post-image">
+         <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97">
+        </div>
+        <h2>现代化 Mini Blog 设计</h2>
+        <div class="meta">
+          <span>2026-01-09</span>
+          <span>· 爹</span>
+        </div>
+        <p>采用 Glassmorphism、自动深浅色、柔和动画和现代排版，让纯 HTML + CSS 也能很有质感。</p>
+        <div class="actions">
+          <a href="post.html" class="btn">阅读全文</a>
+          <button class="btn secondary edit-btn" data-post-id="10">编辑</button>
+        </div>
+      </article>
+
+      <article class="post glass">
+        <h2>为什么要做现代化 UI</h2>
+        <div class="meta">
+          <span>2026-01-08</span>
+          <span>· Design</span>
+        </div>
+        <p>现代 UI 强调留白、层次、动画与可读性，即使是小项目也能显得专业。</p>
+        <div class="actions">
+          <button class="btn">阅读全文</button>
+        </div>
+      </article> -->
+    </section>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="card glass">
+        <h3>About</h3>
+        <p>一个偏爱现代 Web 设计的小型博客示例，可直接扩展成作品集。</p>
+      </div>
+
+      <div class="card glass">
+        <h3>热门话题</h3>
+        <div class="tags">
+            <span class="tag">Java</span>
+            <span class="tag">Spring Boot</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">MySQL</span>
+            <span class="tag">面试笔记</span>
+            <span class="tag">技术杂谈</span>
+        </div>
+    </div>
+    </aside>
+  </main>
+
+  <footer>
+    © 2026 MiniBlog · Modern HTML & CSS
+  </footer>
+  <div id="loginModal" class="modal">
+    <div class="modal-content glass">
+      <span class="close-btn">&times;</span>
+      <h2>Login</h2>
+      <form id="authForm">
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button class="btn" id="submitbtn" type="submit">Login</button>
+      </form>
+ 
+      <p style="margin-top:12px; font-size:0.9rem; color:var(--muted);">
+        Don’t have an account yet? 
+        <a href="register.html" style="color:var(--accent); font-weight:600;">Registre</a>
+      </p>
+    </div>
+</div>
+
+<div id="addPostModal" class="modal">
+  <div class="modal-content glass">
+    <span class="close-btn">&times;</span>
+    <h2>Add Post</h2>
+
+    <form id="addPostForm">
+      <input type="text" name="title" placeholder="Title" required>
+      <textarea name="content" placeholder="Content" rows="4" required></textarea>
+      <input type="file" id="imageInput" name="images" accept="image/*" multiple>
+      <div id="imagePreview" class="image-preview"></div>
+
+      <button class="btn" id="submitbtn2" type="submit">Submit</button>
+    </form>
+  </div>
+</div>
+
+
+</body>
+</html>
+<script src="../js/jquery-3.7.1.min.js"></script>
+<script src="../js/all.js"></script>
+
+
